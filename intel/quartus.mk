@@ -100,8 +100,6 @@ SYNTH_TOP_DEPS := $(sort $(strip $($(TOP)_DEPS)))
 
 # Extra sources for TCL commands
 TIMEQUEST_RPT_GEN := $(HDL_BUILD_PATH)/intel/synth_timequest_rpt_gen.tcl
-GLOBAL_SYNTH_SETTINGS := $(HDL_BUILD_PATH)/intel/synth_global_settings.tcl
-SDC_SETTINGS := $(HDL_BUILD_PATH)/intel/synth_sdc_settings.tcl
 
 # Altera tool version
 # (use `quartus_sh -v | grep -o "Pro"` to avoid path dep, but takes too long)
@@ -286,10 +284,13 @@ $(DEP_DIR)/%.quartus.o:  $(PRO_RESULT) | $(DEP_DIR) $(BLOG_DIR) $(IP_DIR) $(TCL_
 # Create rules to create inputs to project QSF file
 
 # SDC files MUST be listed after IP files to work in Pro
-$(PROJ_TCL): $(FILES_TCL) $(PARAMETER_TCL) $(STD_V_PRO_MACRO_FILE) $(GLOBAL_SYNTH_SETTINGS) $(EXTRA_TCL) $(SDC_DONE) | $(TCL_DIR)
+include $(HDL_BUILD_PATH)/intel/synth_tcl.mk
+$(PROJ_TCL): $(FILES_TCL) $(PARAMETER_TCL) $(STD_V_PRO_MACRO_FILE) $(EXTRA_TCL) $(SDC_DONE) | $(TCL_DIR)
 	@echo; echo -e "$O Quartus project $C"
-	@cat $(GLOBAL_SYNTH_SETTINGS) $(STD_V_PRO_MACRO_FILE) $(FILES_TCL) $(PARAMETER_TCL) $(SDC_SETTINGS) > $(PROJ_TCL)
-	@echo '$(QSF_EXTRA)' >> $(PROJ_TCL)
+	@echo -e "$(synth_global)" > $@
+	@cat $(STD_V_PRO_MACRO_FILE) $(FILES_TCL) $(PARAMETER_TCL) >> $@
+	@echo -e "$(synth_sdc)" >> $@
+	@echo '$(QSF_EXTRA)' >> $@
 # Only one IP_SEARCH_PATHS allowed, combine lines with ';'
 	@grep IP_SEARCH_PATHS $(PROJ_TCL) | cut -d " " -f4 | sort | uniq | tr '\n' ';' > $(PROJ_TCL).ip
 	@if [ -s $(PROJ_TCL).ip ]; then \

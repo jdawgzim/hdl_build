@@ -151,15 +151,15 @@ $(SIM_SUB_DONE): $(SIMSUB_DEP)
 include $(HDL_BUILD_PATH)/siemens/do_files.mk
 .PHONY: sim
 sim: $(PRESIM_GOAL) $(presim_hook) ## Run simulation in GUI
-	@printf "$(run_str)" > $(RUN_SCRIPT)
-	@printf '$(redo_str)' > $(REDO_SCRIPT)
+	@echo -e "$(run_str)" > $(RUN_SCRIPT)
+	@echo -e '$(redo_str)' > $(REDO_SCRIPT)
 	@echo -e "$O Starting simulation $C"
 	vsim $(MS_INI_PARAM) -i -do $(RUN_SCRIPT)&
 
 
 .PHONY: elab_sim
 elab_sim: $(PRESIM_GOAL) $(presim_hook) ## Run elaboration batch
-	@printf "$(elab_str)" > $(BATCH_SCRIPT)
+	@echo -e "$(elab_str)" > $(BATCH_SCRIPT)
 	@chmod +x $(BATCH_SCRIPT)
 	@echo -e "$O Starting batch simulation $C (see $(BLOG_DIR)/batch.log)"
 	@$(BUILD_SCRIPTS)/run_full_log_on_err.sh "./$(BATCH_SCRIPT)" \
@@ -168,7 +168,7 @@ elab_sim: $(PRESIM_GOAL) $(presim_hook) ## Run elaboration batch
 
 .PHONY: batch
 batch: $(PRESIM_GOAL) $(presim_hook) ## Run simulation batch
-	@printf "$(batch_str)" > $(BATCH_SCRIPT)
+	@echo -e "$(batch_str)" > $(BATCH_SCRIPT)
 	@chmod +x $(BATCH_SCRIPT)
 	@echo -e "$O Starting batch simulation $C (see $(BLOG_DIR)/batch.log)"
 	@if $(BUILD_SCRIPTS)/run_full_log_on_err.sh "./$(BATCH_SCRIPT)" \
