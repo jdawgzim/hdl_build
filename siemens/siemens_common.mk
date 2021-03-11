@@ -21,10 +21,12 @@ $(presim_hook): | $(DONE_DIR) ## hook to run before starting sim
 TRANSCRIPT := $(BLD_DIR)/transcript
 WORK := $(SIM_LIB_DIR)/work
 PARAMETER_DONE := $(DONE_DIR)/parameters.done
-SIM_SEED := 9149
 RUN_SCRIPT := $(BLD_DIR)/run.do
 BATCH_SCRIPT := $(BLD_DIR)/batch.do
 REDO_SCRIPT := $(BLD_DIR)/redo.do
+ifndef SIM_SEED
+  SIM_SEED := 9149
+endif
 
 $(SIM_LIB_DIR):
 	@mkdir -p $(SIM_LIB_DIR)

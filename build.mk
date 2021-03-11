@@ -47,7 +47,9 @@ IGNORE_FILE := .ignore_build_system
 ##################### Directory targets ##############################
 
 # BLD_DIR holds all make system results
-BLD_DIR := bld
+ifndef BLD_DIR
+  BLD_DIR := bld
+endif
 $(BLD_DIR):
 	@mkdir -p $(BLD_DIR)
 	@touch $(BLD_DIR)/$(IGNORE_FILE)
