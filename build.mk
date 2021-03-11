@@ -36,6 +36,8 @@ endif
 ifdef GIT_REPO
   SRC_BASE_DIR := $(GIT_ROOT)
 endif
+# Make SRC_BASE_DIR available to sub commands
+export SRC_BASE_DIR
 
 # set IGNORE_DIRS in upper makefile
 # `touch .ignore_build_system` in a directory that should be ignored

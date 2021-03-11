@@ -154,7 +154,7 @@ sim: $(PRESIM_GOAL) $(presim_hook) ## Run simulation in GUI
 	@echo -e "$(run_str)" > $(RUN_SCRIPT)
 	@echo -e '$(redo_str)' > $(REDO_SCRIPT)
 	@echo -e "$O Starting simulation $C"
-	vsim $(MS_INI_PARAM) -i -do $(RUN_SCRIPT)&
+	MAKEFLAGS="-$(filter-out --jobserver-fds=%,$(MAKEFLAGS))" vsim $(MS_INI_PARAM) -i -do $(RUN_SCRIPT)&
 
 
 .PHONY: elab_sim

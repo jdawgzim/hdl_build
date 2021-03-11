@@ -1,3 +1,5 @@
+#-*- makefile -*-
+
 # This is needed for subst command below
 define newline
 
@@ -7,7 +9,7 @@ endef
 
 define global_tcl
 project_new $(PROJECT) -overwrite
-set_global_assignment -name FAMILY "$(FAMILY)"
+set_global_assignment -name FAMILY $(FAMILY)
 set_global_assignment -name DEVICE $(DEVICE)
 set_global_assignment -name TOP_LEVEL_ENTITY $(TOP)
 
@@ -52,6 +54,6 @@ set_global_assignment -name SDC_FILE $(HDL_BUILD_PATH)/intel/jtag.sdc
 
 endef
 
-# Convert the raw string above into `printf` friendly strings
+# Convert the raw string above into `echo -e` friendly strings
 synth_global = $(subst ",\", $(subst $(newline),\n,$(global_tcl)))
 synth_sdc = $(subst ',\', $(subst $(newline),\n,$(sdc_tcl)))
